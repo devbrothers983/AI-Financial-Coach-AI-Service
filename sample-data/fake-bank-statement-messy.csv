@@ -1,0 +1,14 @@
+Transaction Date,Memo,Debit/Credit Type,Value,Category,Notes
+10/01/2026,"ACME CORP, PAYROLL",Credit,"$3,200.00",Salary,October pay
+10/02/2026,"Rent, Sunnyside ""Unit 4""",Debit,"$1,250.00",Bills,
+10/05/2026,NETFLIX.COM,Debit,17.99,,
+10/07/2026,Whole Foods Market,Debit,86.32,Groceries,Weekly shop
+10/09/2026,Uber Trip,,-19.80,,No type column value
+10/12/2026,Coffee Corner,Debit,(4.50),Food,Brackets mean negative
+10/15/2026,Vet Clinic,Debit,120.00,Pet Stuff,Unknown category
+10/20/2026,Café Münster,Debit,12.40,Food,Accented letters
+
+10/22/2026,Missing amount row,Debit,,Food,Should be skipped
+not-a-date,Bad date row,Debit,10.00,Food,Should be skipped
+10/25/2026,Zero amount row,Debit,0.00,Food,Should be skipped
+10/28/2026,Transfer to savings,Debit,200.00,,Own transfer
