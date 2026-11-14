@@ -38,58 +38,12 @@ def analyze_affordability(
     # ========================================
     # Create User Context
     # ========================================
+    # Sent as JSON so every figure reaches the AI exactly, nulls included.
 
-    user_context = f"""
-Purchase:
-
-Name: {financial_data.purchase_name}
-Price: ${financial_data.purchase_price}
-Reason: {financial_data.reason}
-
-
-Financial Situation:
-
-Monthly Income:
-${financial_data.monthly_income}
-
-Monthly Expenses:
-${financial_data.monthly_expenses}
-
-Net Cash Flow:
-${financial_data.net_cash_flow}
-
-Total Budget:
-${financial_data.total_budget}
-
-Budget Remaining:
-${financial_data.budget_remaining}
-
-Savings Rate:
-{financial_data.savings_rate}%
-
-
-Savings Goals:
-
-{
-    json.dumps(
-        [
-            goal.model_dump()
-            for goal in financial_data.goals
-        ],
-        indent=2
+    user_context = (
+        "Should I buy this? Here is the purchase and my financial data:\n\n"
+        + json.dumps(financial_data.model_dump(), indent=2)
     )
-}
-
-
-Analyze whether this purchase is financially reasonable.
-
-Return:
-
-- recommendation
-- explanation
-- risk_level
-- suggested_action
-"""
 
 
     # ========================================
@@ -200,4 +154,16 @@ Return:
     )
 
 
-    return result 
+    # ========================================
+    # Never Softer Than the Backend's Rule
+    # ========================================
+
+    order = ["AFFORDABLE", "CAUTION", "NOT_RECOMMENDED"]
+    risk_for = {"AFFORDABLE": "LOW", "CAUTION": "MEDIUM", "NOT_RECOMMENDED": "HIGH"}
+
+    if order.index(result.recommendation) < order.index(financial_data.minimum_recommendation):
+        result.recommendation = financial_data.minimum_recommendation
+        result.risk_level = risk_for[result.recommendation]
+
+
+    return result
